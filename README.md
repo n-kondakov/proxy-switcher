@@ -1,6 +1,6 @@
 # 🌐 Proxy Switcher
 
-Удобное управление прокси для Chrome: глобальный режим, правила по доменам, авто-переключение при сбоях, защита от утечек и разблокировка 1080p/1440p на Twitch.
+Удобное управление прокси для браузеров на базе Chromium(Chrome, Edge, Yandex): глобальный режим, правила по доменам, авто-переключение при сбоях, защита от утечек и разблокировка 1080p/1440p на Twitch.
 
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-blue?style=flat-square)](https://developer.chrome.com/docs/extensions/mv3/)
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
@@ -36,7 +36,7 @@
 1. Скачай или склонируй репозиторий:
    ```bash
    git clone https://github.com/undecide/proxy-switcher.git
-2. Открой Chrome и перейди в `chrome://extensions/`
+2. Открой браузер и перейди в `chrome://extensions/`
 3. Включи **Режим разработчика**
 4. Нажми **Загрузить распакованное расширение** и выбери папку с проектом
 
