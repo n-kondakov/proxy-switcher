@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Proxy Switcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-logo"></div>
+    <div>
+      <div class="hdr-title">ProxySwitcher</div>
+      <div class="hdr-sub" id="hdrSub">Ready</div>
+    </div>
+  </div>
+  <div class="status-chip" id="statusChip">
+    <span class="dot" id="statusDot"></span>
+    <span id="statusTxt">DIRECT</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="proxies">Прокси</div>
+  <div class="tab" data-tab="domains">Домены</div>
+  <div class="tab" data-tab="tools">Инструменты</div>
+</div>
+
+<!-- Прокси -->
+<div class="panel active" id="tab-proxies">
+  <div class="proxies-wrap">
+
+    <div class="global-bar" id="globalBar">
+      <div class="global-bar-left">
+        <div class="global-bar-icon">🌍</div>
+        <div>
+          <div class="global-bar-title">Глобальный режим</div>
+          <div class="global-bar-desc">Весь трафик через выбранный прокси</div>
+        </div>
+      </div>
+      <label class="tog">
+        <input type="checkbox" id="globalToggle">
+        <div class="tog-track"></div>
+        <div class="tog-thumb"></div>
+      </label>
+    </div>
+
+    <div class="section-label">
+      <span>Список прокси</span>
+      <span id="proxyCount">0</span>
+    </div>
+
+    <div class="proxy-list" id="proxyList">
+      <div class="no-proxies">
+        <div class="no-proxies-icon">🔌</div>
+        Добавь прокси-серверы<br>для начала работы
+      </div>
+    </div>
+
+    <button class="btn-outline" id="addProxyBtn">+ Добавить прокси</button>
+
+    <div class="auto-section">
+      <div class="auto-header" id="autoHeader">
+        <div class="auto-header-left">
+          <div class="auto-header-icon">🔄</div>
+          <div>
+            <div class="auto-title">Авто-свитчер</div>
+            <div class="auto-desc">Переключить при сбое прокси</div>
+          </div>
+        </div>
+        <label class="tog" id="autoTogLabel">
+          <input type="checkbox" id="autoToggle">
+          <div class="tog-track"></div>
+          <div class="tog-thumb"></div>
+        </label>
+      </div>
+      <div class="auto-body" id="autoBody">
+        <div class="auto-note">
+          Отметь <b>AUTO</b> у запасных прокси.<br>
+          Если текущий не отвечает — расширение автоматически переключится на следующий.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Домены -->
+<div class="panel" id="tab-domains">
+  <div class="domains-wrap">
+
+    <div class="domain-add-row">
+      <input class="input" id="domainInput" type="text" placeholder="example.com" spellcheck="false" autocomplete="off">
+      <select class="proxy-select-inline" id="domainProxySelect" style="width:110px"></select>
+      <button class="btn-sq" id="addDomainBtn">+</button>
+    </div>
+
+    <div class="section-label">
+      <span>Домены</span>
+      <span id="domainCount">0</span>
+    </div>
+
+    <div class="domain-list" id="domainList">
+      <div class="domain-empty">
+        <div class="domain-empty-icon">🌐</div>
+        Добавь домены — прокси будет<br>работать только для них.<br>Нажми на точку чтобы отключить.
+      </div>
+    </div>
+
+    <div class="domains-footer">
+      <span>Точка = вкл/выкл домен</span>
+      <span><span class="footer-kbd">Enter</span> добавить домен</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Инструменты -->
+<div class="panel" id="tab-tools">
+  <div class="tools-wrap">
+
+    <div class="tool-card active-tool" id="webrtcCard">
+      <div class="tool-card-left">
+        <div class="tool-icon">🛡️</div>
+        <div class="tool-info">
+          <div class="tool-title">
+            Защита WebRTC
+            <span class="info-btn" id="webrtcInfoBtn">i</span>
+          </div>
+          <div class="tool-desc on" id="webrtcDesc">Включено — реальный IP скрыт</div>
+        </div>
+      </div>
+      <label class="tog">
+        <input type="checkbox" id="webrtcToggle" checked>
+        <div class="tog-track"></div>
+        <div class="tog-thumb"></div>
+      </label>
+    </div>
+
+    <div class="tool-tooltip" id="webrtcTooltip">
+      <div class="tooltip-title">Что такое WebRTC утечка?</div>
+      <div class="tooltip-body">
+        WebRTC — технология браузера для видеозвонков и P2P. Она обращается к сети
+        <b>напрямую, минуя прокси</b> — сайты могут узнать твой реальный IP даже
+        когда прокси включён.<br><br>
+        Защита переводит WebRTC в режим <b>«только через прокси»</b>.
+      </div>
+    </div>
+
+    <div class="tool-divider"></div>
+
+    <div class="tool-card" id="twitchCard">
+      <div class="tool-card-left">
+        <div class="tool-icon">🎮</div>
+        <div class="tool-info">
+          <div class="tool-title">
+            Twitch 1080p / 1440p
+            <span class="info-btn" id="twitchInfoBtn">i</span>
+          </div>
+          <div class="tool-desc" id="twitchDesc">Отключено</div>
+        </div>
+      </div>
+      <label class="tog">
+        <input type="checkbox" id="twitchToggle">
+        <div class="tog-track"></div>
+        <div class="tog-thumb"></div>
+      </label>
+    </div>
+
+    <div class="tool-tooltip" id="twitchTooltip">
+      <div class="tooltip-title">Как это работает?</div>
+      <div class="tooltip-body">
+        В России Twitch ограничивает качество до 720p через локальные CDN-серверы.
+        Ограничение происходит на этапе <b>выдачи плейлиста</b> — сервер
+        <b>usher.ttvnw.net</b> возвращает только часть доступных качеств.<br><br>
+        При включении этой функции запросы к usher.ttvnw.net перенаправляются через
+        промежуточный прокси-сервер — он получает полный плейлист с 1080p и 1440p
+        и возвращает его браузеру. Видео после этого качается напрямую с CDN,
+        <b>твой IP не меняется</b>.
+      </div>
+    </div>
+
+    <div class="tool-divider"></div>
+
+    <div class="tool-card" style="flex-direction:column;align-items:stretch;gap:8px;cursor:default">
+      <div class="tool-card-left" style="pointer-events:none">
+        <div class="tool-icon">💾</div>
+        <div class="tool-info">
+          <div class="tool-title">Импорт / Экспорт</div>
+          <div class="tool-desc">Сохранить или восстановить все настройки</div>
+        </div>
+      </div>
+      <div class="ie-row">
+        <button class="ie-btn" id="exportBtn">⬆ Экспорт</button>
+        <button class="ie-btn import-btn" id="importBtn">⬇ Импорт</button>
+      </div>
+      <input type="file" id="importFile" accept=".json" style="display:none">
+    </div>
+
+    <div class="tool-divider"></div>
+
+    <div class="tools-status-block" id="toolsStatusBlock">
+      <div class="tools-status-icon">✅</div>
+      <div class="tools-status-text" style="color:var(--green)">Активно: WebRTC защита</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Модальное окно добавления/редактирования прокси -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-title">
+      <button class="modal-close" id="modalClose">×</button>
+      <span id="modalTitle">Добавить прокси</span>
+    </div>
+
+    <div class="field">
+      <span class="field-label">Название</span>
+      <input class="input" id="mName" placeholder="Мой прокси" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <span class="field-label">Протокол</span>
+      <div class="proto-row">
+        <div class="proto-opt active" data-proto="socks5">SOCKS5</div>
+        <div class="proto-opt" data-proto="http">HTTP</div>
+      </div>
+    </div>
+
+    <div class="field input-row">
+      <div>
+        <span class="field-label">Хост</span>
+        <input class="input" id="mHost" placeholder="127.0.0.1" autocomplete="off" spellcheck="false">
+      </div>
+      <div>
+        <span class="field-label">Порт</span>
+        <input class="input" id="mPort" type="number" placeholder="1080">
+      </div>
+    </div>
+
+    <div class="field input-row2">
+      <div>
+        <span class="field-label">Логин</span>
+        <input class="input" id="mUser" placeholder="необязательно" autocomplete="off">
+      </div>
+      <div>
+        <span class="field-label">Пароль</span>
+        <input class="input" id="mPass" type="password" placeholder="••••••">
+      </div>
+    </div>
+
+    <div class="auto-check-row">
+      <input type="checkbox" id="mAutoSwitch">
+      <label for="mAutoSwitch" class="auto-check-label">
+        Участвует в авто-свитчере <span style="color:var(--accent2)">(AUTO)</span>
+      </label>
+    </div>
+
+    <button class="btn-primary" id="modalSave">Сохранить</button>
+  </div>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
