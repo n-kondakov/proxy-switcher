@@ -35,7 +35,7 @@
 
 1. Скачай или склонируй репозиторий:
    ```bash
-   git clone https://github.com/undecide/proxy-switcher.git
+   git clone https://github.com/n-kondakov/proxy-switcher.git
 2. Открой браузер и перейди в `chrome://extensions/`
 3. Включи **Режим разработчика**
 4. Нажми **Загрузить распакованное расширение** и выбери папку с проектом
